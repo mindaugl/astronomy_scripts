@@ -58,7 +58,7 @@ f.step_days = 5.0
 t, y = find_minima(start_time, end_time, f, num=4)
 
 jd, fr = t.whole, t.tdb_fraction
-b = earth_barycenter.compute(jd, fr)
+b, velocity = earth_barycenter.compute_and_differentiate(jd, fr)
 e = earth.compute(jd, fr)
 m = moon.compute(jd, fr)
 s = sun.compute(jd, fr)
@@ -66,6 +66,11 @@ s = sun.compute(jd, fr)
 earth_to_sun = s - b - e
 moon_to_earth = e - m
 moon_to_sun = s - b - m
+
+earth_to_sun_AU = earth_to_sun / AU_KM
+add_aberration(earth_to_sun_AU, velocity / AU_KM, length_of(earth_to_sun_AU) / C_AUDAY)
+earth_to_sun = earth_to_sun_AU * AU_KM
+
 
 ###########
 
