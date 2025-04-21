@@ -48,8 +48,10 @@ def magnitude_obscurity(e_to_s, e_to_m, s_radius, m_radius, e_radius):
     dist = length_of(m_to_ecl - s_to_ecl_res)
     if dist >= s_radius_res + m_radius:
         return 0.0, 0.0
-    if m_radius + dist <= s_radius_res or s_radius_res + dist <= m_radius:
-        mag = m_radius / s_radius_res
+    mag = m_radius / s_radius_res
+    if m_radius + dist <= s_radius_res:
+        obs = m_radius * m_radius / (s_radius_res * s_radius_res)
+    elif s_radius_res + dist <= m_radius:
         obs = 1.0
     else:
         mag = (s_radius_res + m_radius - dist) / (2 * s_radius_res)
